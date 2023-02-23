@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.model.User;
 import org.example.view.AdminUI;
 import org.example.view.LoginAndRegisterUI;
 import org.jetbrains.annotations.NotNull;
@@ -30,9 +31,13 @@ public class CommonController implements ActionListener {
     @Override
     public void actionPerformed(@NotNull ActionEvent e) {
         if(e.getActionCommand().equals("loginAction") || e.getActionCommand().equals("dialogButtonAction")) {
-            loginAndRegister.login();
-            loginAndRegister.setVisible(false);
-            admin.setVisible(true);
+            User user = loginAndRegister.login();
+            if(user != null) {
+                loginAndRegister.setVisible(false);
+                if(user.getName().equals("admin")) {
+                    admin.setVisible(true);
+                }
+            }
         }
         else {
             loginAndRegister.register();

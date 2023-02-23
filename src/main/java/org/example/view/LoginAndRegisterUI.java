@@ -92,7 +92,7 @@ public class LoginAndRegisterUI extends JFrame {
     private javax.swing.JLabel userNameLabel;
     private javax.swing.JTextField userNameTextField;
 
-    public void login() {
+    public User login() {
         User user = userData.getUser(new User(userNameTextField.getText(), String.valueOf(passwordTextField.getPassword())));
         if (user != null) {
             new DialogWithoutAction(this, "Đăng nhập thành công", true);
@@ -101,6 +101,7 @@ public class LoginAndRegisterUI extends JFrame {
         else {
             new DialogWithoutAction(this, "Đăng nhập thất bại", true);
         }
+        return user;
     }
     public void register() {
         Message message = userData.addUser(new User(userNameTextField.getText(), String.valueOf(passwordTextField.getPassword())));
