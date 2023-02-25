@@ -1,8 +1,9 @@
 package org.example.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class User {
+public class User implements Serializable {
     public UUID getId() {
         return id;
     }
@@ -19,17 +20,9 @@ public class User {
         this.name = name;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     UUID id;
     String name;
-    String role;
+
 
     public String getPassword() {
         return password;
@@ -43,7 +36,6 @@ public class User {
     public User(String name, String password) {
         this.id = UUID.randomUUID();
         this.name = name;
-        this.role = "user";
         this.password = password;
     }
 

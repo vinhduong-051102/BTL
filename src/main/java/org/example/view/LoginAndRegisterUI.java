@@ -9,6 +9,7 @@ import org.example.model.User;
 import javax.swing.*;
 
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class LoginAndRegisterUI extends JFrame {
     private CommonVariable commonVariable;
@@ -103,7 +104,7 @@ public class LoginAndRegisterUI extends JFrame {
         }
         return user;
     }
-    public void register() {
+    public void register() throws IOException {
         Message message = userData.addUser(new User(userNameTextField.getText(), String.valueOf(passwordTextField.getPassword())));
         if (message.getStatus() == 1) {
             new DialogWithAction(this,true, message.getMess(), "Đăng nhập", ac);

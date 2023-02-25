@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class CommonController implements ActionListener {
     private LoginAndRegisterUI loginAndRegister;
@@ -39,8 +40,25 @@ public class CommonController implements ActionListener {
                 }
             }
         }
-        else {
-            loginAndRegister.register();
+        else if(e.getActionCommand().equals("registerAction")) {
+            try {
+                loginAndRegister.register();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
+        else if(e.getActionCommand().equals("addNewClassAction")) {
+            admin.openModalAddNewClass();
+        }
+        else if(e.getActionCommand().equals("submitFormAddNewClass")) {
+            try {
+                admin.addNewClass();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } else if (e.getActionCommand().equals("searchAction")) {
+            admin.searchRoom();
+        }
+
     }
 }
