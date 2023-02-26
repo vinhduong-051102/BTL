@@ -4,15 +4,17 @@ import javax.swing.*;
 import java.util.UUID;
 
 public class CommonVariable {
-    public UUID getIdUserLogin() {
-        return idUserLogin;
+
+
+    public String getUserName() {
+        return userName;
     }
 
-    public void setIdUserLogin(UUID idUserLogin) {
-        this.idUserLogin = idUserLogin;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    private UUID idUserLogin;
+    private String userName;
     public void openFrame(JFrame frame) {
         frame.setVisible(true);
     }

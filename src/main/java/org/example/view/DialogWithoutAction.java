@@ -3,12 +3,14 @@ package org.example.view;
 public class DialogWithoutAction extends javax.swing.JDialog {
 
 
+    protected javax.swing.JLabel label;
+
+
     public DialogWithoutAction(java.awt.Frame parent, String title, boolean modal) {
         super(parent, modal);
         initComponents(title);
         setVisible(true);
     }
-
 
     @SuppressWarnings("unchecked")
 
@@ -38,10 +40,8 @@ public class DialogWithoutAction extends javax.swing.JDialog {
         pack();
     }// </editor-fold>
 
-
     public void close() {
         dispose();
     }
-    protected javax.swing.JLabel label;
 
 }

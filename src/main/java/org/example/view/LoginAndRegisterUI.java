@@ -7,14 +7,19 @@ import org.example.model.Message;
 import org.example.model.User;
 
 import javax.swing.*;
-
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class LoginAndRegisterUI extends JFrame {
-    private CommonVariable commonVariable;
-    private UserData userData;
-    private ActionListener ac;
+    private final CommonVariable commonVariable;
+    private final UserData userData;
+    private final ActionListener ac;
+    private javax.swing.JButton loginBtn;
+    private javax.swing.JLabel passwordLabel;
+    private JPasswordField passwordTextField;
+    private javax.swing.JButton registerBtn;
+    private javax.swing.JLabel userNameLabel;
+    private javax.swing.JTextField userNameTextField;
     public LoginAndRegisterUI(UserData userData, CommonVariable commonVariable, CommonController ac) {
         this.ac = ac;
         ac.setLoginAndRegister(this);
@@ -23,7 +28,6 @@ public class LoginAndRegisterUI extends JFrame {
         initComponents();
         setVisible(true);
     }
-
 
     @SuppressWarnings("unchecked")
 
@@ -86,31 +90,28 @@ public class LoginAndRegisterUI extends JFrame {
 
         pack();
     }
-    private javax.swing.JButton loginBtn;
-    private javax.swing.JLabel passwordLabel;
-    private JPasswordField passwordTextField;
-    private javax.swing.JButton registerBtn;
-    private javax.swing.JLabel userNameLabel;
-    private javax.swing.JTextField userNameTextField;
 
     public User login() {
         User user = userData.getUser(new User(userNameTextField.getText(), String.valueOf(passwordTextField.getPassword())));
         if (user != null) {
             new DialogWithoutAction(this, "Đăng nhập thành công", true);
-            commonVariable.setIdUserLogin(user.getId());
-        }
-        else {
+            commonVariable.setUserName(user.getName());
+        } else {
             new DialogWithoutAction(this, "Đăng nhập thất bại", true);
         }
         return user;
     }
+
     public void register() throws IOException {
         Message message = userData.addUser(new User(userNameTextField.getText(), String.valueOf(passwordTextField.getPassword())));
         if (message.getStatus() == 1) {
-            new DialogWithAction(this,true, message.getMess(), "Đăng nhập", ac);
-        }
-        else {
+            new DialogWithAction(this, true, message.getMess(), "Đăng nhập", ac);
+        } else {
             new DialogWithoutAction(this, message.getMess(), true);
         }
+    }
+    public void resetField() {
+        userNameTextField.setText("");
+        passwordTextField.setText("");
     }
 }

@@ -5,6 +5,7 @@ import org.example.database.RoomData;
 import org.example.database.UserData;
 import org.example.view.AdminUI;
 import org.example.view.LoginAndRegisterUI;
+import org.example.view.UserUI;
 
 import java.io.IOException;
 
@@ -16,5 +17,6 @@ public class Main {
         CommonController commonController = new CommonController();
         new LoginAndRegisterUI(userData, commonVariable, commonController);
         new AdminUI(userData, commonVariable, commonController, roomData);
+        new UserUI(roomData, commonController, commonController, commonVariable);
     }
 }

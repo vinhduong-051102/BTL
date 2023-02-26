@@ -3,6 +3,15 @@ package org.example.view;
 import java.awt.event.ActionListener;
 
 public class DialogWithAction extends javax.swing.JDialog {
+    /**
+     * @param args the command line arguments
+     */
+
+
+    // Variables declaration - do not modify
+    private javax.swing.JButton button;
+    private javax.swing.JLabel label;
+
     public DialogWithAction(java.awt.Frame parent, boolean modal, String title, String labelBtn, ActionListener ac) {
         super(parent, modal);
         initComponents();
@@ -47,14 +56,6 @@ public class DialogWithAction extends javax.swing.JDialog {
         pack();
     }// </editor-fold>
 
-    /**
-     * @param args the command line arguments
-     */
-
-
-    // Variables declaration - do not modify
-    private javax.swing.JButton button;
-    private javax.swing.JLabel label;
     // End of variables declaration
     public void close() {
         dispose();

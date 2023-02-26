@@ -1,6 +1,8 @@
 package org.example.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Room implements Serializable {
@@ -10,6 +12,9 @@ public class Room implements Serializable {
         this.location = location;
         this.id = UUID.randomUUID();
         this.status = 1;
+        this.date = "";
+        this.userOrder = "";
+        this.lessons = new ArrayList<>();
     }
 
     public String getName() {
@@ -40,6 +45,34 @@ public class Room implements Serializable {
     private int type;
     private String location;
 
+    public String getUserOrder() {
+        return userOrder;
+    }
+
+    public void setUserOrder(String userOrder) {
+        this.userOrder = userOrder;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    private String userOrder;
+    private String date;
+
+    public List<String> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(List<String> lessons) {
+        this.lessons = lessons;
+    }
+
+    private List<String> lessons;
     public UUID getId() {
         return id;
     }
