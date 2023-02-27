@@ -133,6 +133,9 @@ public class CommonController implements ActionListener {
                 throw new RuntimeException(ex);
             }
         }
+        if(e.getActionCommand().equals("viewDetailMenuItemAction")) {
+            admin.viewDetail();
+        }
     }
 
     public UserUI getUserUI() {

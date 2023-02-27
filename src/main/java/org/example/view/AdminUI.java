@@ -41,6 +41,7 @@ public class AdminUI extends JFrame {
     private JMenuItem editMenuItem;
     private JMenuItem deleteMenuItem;
     private JMenuItem viewDetailMenuItem;
+    private ViewDetail viewDetailUI;
     public AdminUI(UserData userData, CommonVariable commonVariable, @NotNull CommonController ac, RoomData roomData) {
         this.ac = ac;
         this.roomData = roomData;
@@ -66,6 +67,8 @@ public class AdminUI extends JFrame {
         deleteMenuItem.setActionCommand("deleteMenuItemAction");
         deleteMenuItem.addActionListener(ac);
         viewDetailMenuItem = new JMenuItem("Xem chi tiết");
+        viewDetailMenuItem.setActionCommand("viewDetailMenuItemAction");
+        viewDetailMenuItem.addActionListener(ac);
         popupMenu.add(submitMenuItem);
         popupMenu.add(editMenuItem);
         popupMenu.add(deleteMenuItem);
@@ -234,6 +237,10 @@ public class AdminUI extends JFrame {
         Message message = roomData.updateRoom(roomSelected.getId(), newRoom);
         new DialogWithoutAction(this, message.getMess(), true);
         table.updateUI();
+    }
+    public void viewDetail() {
+        Room roomSelected = tableModel.getRenderData().get(table.getSelectedRow());
+        new ViewDetail(this, true, roomSelected);
     }
     class TableModel extends AbstractTableModel {
         protected RoomData data;

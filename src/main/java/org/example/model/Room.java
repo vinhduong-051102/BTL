@@ -71,23 +71,27 @@ public class Room implements Serializable {
     public void setLessons(List<String> lessons) {
         this.lessons = lessons;
     }
-
     private List<String> lessons;
     public UUID getId() {
         return id;
     }
-
     public void setId(UUID id) {
         this.id = id;
     }
-
     private UUID id;
-
     public int getStatus() {
         return status;
     }
-
     public void setStatus(int status) {
         this.status = status;
+    }
+    public String toStringLessons() {
+        String str = "";
+        for (String l :
+                lessons) {
+            str += (" " + l + ", ");
+
+        }
+        return str;
     }
 }

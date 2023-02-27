@@ -237,7 +237,7 @@ public class UserUI extends javax.swing.JFrame {
     }
     public void openModalOrderClass() {
         Room roomSelected = tableModel.getRenderData().get(jTable1.getSelectedRow());
-        if(roomSelected.getStatus() == 2) {
+        if(roomSelected.getStatus() == 1) {
             this.orderClassUI.setVisible(true);
         }
         else {
