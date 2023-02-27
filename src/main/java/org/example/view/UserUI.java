@@ -236,7 +236,13 @@ public class UserUI extends javax.swing.JFrame {
         statusComboBox.setSelectedIndex(0);
     }
     public void openModalOrderClass() {
-        this.orderClassUI.setVisible(true);
+        Room roomSelected = tableModel.getRenderData().get(jTable1.getSelectedRow());
+        if(roomSelected.getStatus() == 2) {
+            this.orderClassUI.setVisible(true);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Chỉ mượn được phòng ở trạng thái 'Chưa được mượn'");
+        }
     }
     public void submitOrderClass() throws IOException {
         Room roomSelected = tableModel.getRenderData().get(jTable1.getSelectedRow());
