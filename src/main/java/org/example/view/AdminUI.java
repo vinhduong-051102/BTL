@@ -55,6 +55,7 @@ public class AdminUI extends JFrame {
     }
 
     private void initComponents() {
+        setTitle("Giao diện quản trị viên");
         setLocationRelativeTo(null);
         tableModel = new TableModel(roomData);
         popupMenu = new JPopupMenu();
@@ -216,7 +217,7 @@ public class AdminUI extends JFrame {
             table.updateUI();
         }
         else {
-            new DialogWithoutAction(this, "Xác nhận thất bại", true);
+            JOptionPane.showMessageDialog(this, "Xác nhận thất bại");
         }
 
     }

@@ -96,9 +96,15 @@ public class OrderClass extends javax.swing.JFrame {
     // End of variables declaration
     public String getDate() {
         Date date = jDateChooser1.getDate();
-        return date.getDate() + "/" + (date.getMonth() + 1) + "/" + (date.getYear() + 1900);
+        if(date != null) {
+            return date.getDate() + "/" + (date.getMonth() + 1) + "/" + (date.getYear() + 1900);
+        }
+        return null;
     }
     public List<String> getLessons() {
         return List.of(list1.getSelectedItems());
+    }
+    public boolean checkValidate() {
+        return getDate() != null || List.of(list1.getSelectedItems()).size() > 0;
     }
 }

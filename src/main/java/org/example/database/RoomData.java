@@ -42,6 +42,9 @@ public class RoomData {
     }
     public List<Room> getByCondition(String name, int type, int status) {
         List<Room> re = new ArrayList<>();
+        System.out.println(status);
+        System.out.println(name);
+        System.out.println(type);
         db.stream().filter(room -> {
         if(!name.isEmpty() || type != 0 || status != 0) {
             if(name.isEmpty() && type != 0 && status != 0) {
@@ -57,6 +60,9 @@ public class RoomData {
                 return room.getName().equals(name) && room.getStatus() == status;
             } else if (status == 0) {
                 return room.getName().equals(name) && room.getType() == type;
+            }
+            else {
+                return room.getName().equals(name) && room.getType() == type && room.getStatus() == status;
             }
         }
 

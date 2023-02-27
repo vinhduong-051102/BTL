@@ -45,7 +45,8 @@ public class Summary extends javax.swing.JDialog {
         unuse = new javax.swing.JLabel();
         wait = new javax.swing.JLabel();
         use = new javax.swing.JLabel();
-
+        total = new javax.swing.JLabel();
+        total.setText("Tổng số phòng: " + listRoom.size());
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Phòng chưa được mượn");
@@ -67,6 +68,7 @@ public class Summary extends javax.swing.JDialog {
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(73, 73, 73)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(total)
                                         .addComponent(wait)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,7 +99,9 @@ public class Summary extends javax.swing.JDialog {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel3)
                                         .addComponent(use))
-                                .addContainerGap(214, Short.MAX_VALUE))
+                                .addGap(37, 37, 37)
+                                .addComponent(total)
+                                .addContainerGap(160, Short.MAX_VALUE))
         );
 
         pack();
@@ -111,6 +115,7 @@ public class Summary extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel total;
     private javax.swing.JLabel unuse;
     private javax.swing.JLabel use;
     private javax.swing.JLabel wait;

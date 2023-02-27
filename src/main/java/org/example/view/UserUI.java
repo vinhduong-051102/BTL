@@ -44,6 +44,7 @@ public class UserUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
+        setTitle("Giao diện người dùng");
         setLocationRelativeTo(null);
         tableModel = new TableModel(roomData);
         popupMenu = new JPopupMenu();
@@ -237,7 +238,7 @@ public class UserUI extends javax.swing.JFrame {
     }
     public void openModalOrderClass() {
         Room roomSelected = tableModel.getRenderData().get(jTable1.getSelectedRow());
-        if(roomSelected.getStatus() == 1) {
+            if(roomSelected.getStatus() == 1) {
             this.orderClassUI.setVisible(true);
         }
         else {
@@ -245,14 +246,20 @@ public class UserUI extends javax.swing.JFrame {
         }
     }
     public void submitOrderClass() throws IOException {
-        Room roomSelected = tableModel.getRenderData().get(jTable1.getSelectedRow());
-        UUID id = roomSelected.getId();
-        Room newRoom = new Room(roomSelected.getName(), roomSelected.getType(), roomSelected.getLocation());
-        newRoom.setStatus(2);
-        newRoom.setUserOrder(commonVariable.getUserName());
-        newRoom.setDate(orderClassUI.getDate());
-        newRoom.setLessons(orderClassUI.getLessons());
-        roomData.updateRoom(id, newRoom);
-        jTable1.updateUI();
+        if(orderClassUI.checkValidate()) {
+            Room roomSelected = tableModel.getRenderData().get(jTable1.getSelectedRow());
+            UUID id = roomSelected.getId();
+            Room newRoom = new Room(roomSelected.getName(), roomSelected.getType(), roomSelected.getLocation());
+            newRoom.setStatus(2);
+            newRoom.setUserOrder(commonVariable.getUserName());
+            newRoom.setDate(orderClassUI.getDate());
+            newRoom.setLessons(orderClassUI.getLessons());
+            roomData.updateRoom(id, newRoom);
+            JOptionPane.showMessageDialog(this, "Đã gửi yêu cầu mượn thành công, quản trị viên sẽ xác nhận sớm");
+            jTable1.updateUI();
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Không được để trống ngày đăng kí hoặc tiết đăng kí");
+        }
     }
 }
