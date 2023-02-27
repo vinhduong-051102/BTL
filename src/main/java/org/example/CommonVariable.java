@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.util.UUID;
 
 public class CommonVariable {
-
+    //new
 
     public String getUserName() {
         return userName;
