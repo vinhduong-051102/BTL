@@ -136,6 +136,10 @@ public class CommonController implements ActionListener {
         if(e.getActionCommand().equals("viewDetailMenuItemAction")) {
             admin.viewDetail();
         }
+        if(e.getActionCommand().equals("summaryBtnAction")) {
+            admin.viewSummary();
+        }
+
     }
 
     public UserUI getUserUI() {

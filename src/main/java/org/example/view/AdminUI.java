@@ -33,6 +33,7 @@ public class AdminUI extends JFrame {
     private javax.swing.JTextField searchTextField;
     private javax.swing.JComboBox<String> statusComboBox;
     private javax.swing.JLabel statusLabel;
+    private javax.swing.JButton summaryBtn;
     private javax.swing.JTable table;
     private javax.swing.JComboBox<String> typeClassComboBox;
     private javax.swing.JLabel typeClassLabel;
@@ -97,9 +98,11 @@ public class AdminUI extends JFrame {
         typeClassComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Tất cả", "Phòng thực hành", "Phòng lý thuyết"}));
 
         statusLabel.setText("Trạng thái");
-
         statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Tất cả", "Chưa được mượn", "Đang chờ xác nhận", "Đã được mượn"}));
-
+        summaryBtn = new javax.swing.JButton();
+        summaryBtn.setText("Xuất thống kê");
+        summaryBtn.setActionCommand("summaryBtnAction");
+        summaryBtn.addActionListener(ac);
         searchBtn.setText("Tìm kiếm");
         searchBtn.setActionCommand("searchAction");
         searchBtn.addActionListener(ac);
@@ -135,7 +138,9 @@ public class AdminUI extends JFrame {
                                                         .addGap(18, 18, 18)
                                                         .addComponent(resetFilterBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addGap(18, 18, 18)
-                                                        .addComponent(addNewClassBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(addNewClassBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                        .addComponent(summaryBtn))
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 571, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -168,7 +173,8 @@ public class AdminUI extends JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(resetFilterBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(addNewClassBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(addNewClassBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(summaryBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(37, Short.MAX_VALUE))
@@ -239,8 +245,18 @@ public class AdminUI extends JFrame {
         table.updateUI();
     }
     public void viewDetail() {
-        Room roomSelected = tableModel.getRenderData().get(table.getSelectedRow());
-        new ViewDetail(this, true, roomSelected);
+        if(table.getSelectedRow() != -1) {
+            Room roomSelected = tableModel.getRenderData().get(table.getSelectedRow());
+
+            new ViewDetail(this, true, roomSelected);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn phòng học");
+        }
+
+    }
+    public void viewSummary() {
+        new Summary(this, true, roomData.getAll());
     }
     class TableModel extends AbstractTableModel {
         protected RoomData data;
