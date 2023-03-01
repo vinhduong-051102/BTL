@@ -1,10 +1,12 @@
 package org.example;
 
-import javax.swing.*;
-import java.util.UUID;
+import org.example.model.Message;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommonVariable {
-
+    private List<Message> listMessage;
 
     public String getUserName() {
         return userName;
@@ -15,7 +17,12 @@ public class CommonVariable {
     }
 
     private String userName;
-    public void openFrame(JFrame frame) {
-        frame.setVisible(true);
+    public List<Message> getListMess(String name) {
+        List<Message> re = new ArrayList<>();
+        listMessage.stream().filter(mess -> mess.getUserName().equals(name)).forEach(mess -> re.add(mess));
+        return re;
+    }
+    public void setListMessage(List<Message> listMessage) {
+        this.listMessage = listMessage;
     }
 }

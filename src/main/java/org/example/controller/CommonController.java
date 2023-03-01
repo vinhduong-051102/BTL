@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.model.Message;
 import org.example.model.User;
 import org.example.view.AdminUI;
 import org.example.view.LoginAndRegisterUI;
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 
 public class CommonController implements ActionListener {
     private LoginAndRegisterUI loginAndRegister;
@@ -45,6 +47,13 @@ public class CommonController implements ActionListener {
                 else {
                     userUI.setVisible(true);
                     loginAndRegister.resetField();
+                    List<Message> listMessage = loginAndRegister.getListMess(user.getName());
+                    try {
+                        userUI.openMess(listMessage);
+                    } catch (IOException ex) {
+                        System.out.println("Có lỗi " + ex);
+
+                    }
                 }
             }
         }
@@ -53,7 +62,8 @@ public class CommonController implements ActionListener {
                 loginAndRegister.register();
                 loginAndRegister.resetField();
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                System.out.println("Có lỗi " + ex);
+
             }
         }
         if(e.getActionCommand().equals("addNewClassAction")) {
@@ -63,7 +73,8 @@ public class CommonController implements ActionListener {
             try {
                 admin.addNewClass();
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                System.out.println("Có lỗi " + ex);
+
             }
         }
         if (e.getActionCommand().equals("searchAction")) {
@@ -89,15 +100,23 @@ public class CommonController implements ActionListener {
             admin.searchRoom();
         }
         if (e.getActionCommand().equals("submitMenuItemAction")) {
+            admin.openSubmitClassModal();
+        }
+        if(e.getActionCommand().equals("submitClassModalAction")) {
             int rowSelect = admin.getRowSelect();
-            if(rowSelect != -1) {
-                try {
-                    admin.submitClass(rowSelect);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+            try {
+                admin.submitClass(rowSelect);
+            } catch (IOException ex) {
+                System.out.println("Có lỗi " + ex);
             }
+        }
+        if (e.getActionCommand().equals("cancelClassModalAction")) {
+            try {
+                admin.cancelClass();
+            } catch (IOException ex) {
+                System.out.println("Có lỗi " + ex);
 
+            }
         }
         if (e.getActionCommand().equals("deleteMenuItemAction")) {
             int rowSelect = admin.getRowSelect();

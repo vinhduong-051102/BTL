@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.controller.CommonController;
+import org.example.database.MessageData;
 import org.example.database.RoomData;
 import org.example.database.UserData;
 import org.example.view.AdminUI;
@@ -14,9 +15,11 @@ public class Main {
         UserData userData = new UserData();
         RoomData roomData = new RoomData();
         CommonVariable commonVariable = new CommonVariable();
+        MessageData messageData = new MessageData(commonVariable);
         CommonController commonController = new CommonController();
+
         new LoginAndRegisterUI(userData, commonVariable, commonController);
-        new AdminUI(userData, commonVariable, commonController, roomData);
-        new UserUI(roomData, commonController, commonController, commonVariable);
+        new AdminUI(userData, commonVariable, commonController, roomData, messageData);
+        new UserUI(roomData, commonController, commonController, commonVariable, messageData);
     }
 }

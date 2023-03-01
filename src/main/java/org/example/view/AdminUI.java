@@ -2,6 +2,7 @@ package org.example.view;
 
 import org.example.CommonVariable;
 import org.example.controller.CommonController;
+import org.example.database.MessageData;
 import org.example.database.RoomData;
 import org.example.database.UserData;
 import org.example.model.Message;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 public class AdminUI extends JFrame {
     private AddRoomUI addRoomUI;
+    private final MessageData messageData;
     private final UserData userData;
     private final CommonVariable commonVariable;
     private final ActionListener ac;
@@ -43,7 +45,9 @@ public class AdminUI extends JFrame {
     private JMenuItem deleteMenuItem;
     private JMenuItem viewDetailMenuItem;
     private ViewDetail viewDetailUI;
-    public AdminUI(UserData userData, CommonVariable commonVariable, @NotNull CommonController ac, RoomData roomData) {
+    private SubmitClassModal submitClassModal;
+    public AdminUI(UserData userData, CommonVariable commonVariable, @NotNull CommonController ac, RoomData roomData, MessageData messageData) {
+        this.messageData = messageData;
         this.ac = ac;
         this.roomData = roomData;
         ac.setAdmin(this);
@@ -215,18 +219,40 @@ public class AdminUI extends JFrame {
             newRoom.setStatus(3);
             roomData.updateRoom(id, newRoom);
             table.updateUI();
+            JOptionPane.showMessageDialog(this, "Đã xác nhận phòng học");
+            Message message = new Message("Quản trị viên đã xác nhận yêu cầu mượn phòng", 1);
+            message.setUserName(roomSelected.getUserOrder());
+            messageData.addMessage(message);
         }
         else {
             JOptionPane.showMessageDialog(this, "Xác nhận thất bại");
         }
-
+    }
+    public void openSubmitClassModal() {
+        if(table.getSelectedRow() != -1) {
+            Room roomSelected = tableModel.getRenderData().get(table.getSelectedRow());
+            if(roomSelected.getStatus() == 2) {
+                new SubmitClassModal(this, true, ac, roomSelected);
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Vui lòng chỉ xác nhận phòng ở trạng thái 'Chờ xác nhận'");
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn phòng học");
+        }
     }
     public void deleteClass(int rowIndex) throws IOException {
         Room roomSelected = tableModel.getRenderData().get(rowIndex);
         UUID id = roomSelected.getId();
-        Message message = roomData.deleteRoom(id);
-        new DialogWithoutAction(this, message.getMess(), true);
-        table.updateUI();
+        int isSubmit = JOptionPane.showConfirmDialog(this, "Xác nhận xoá phòng " + roomSelected.getName() + " toà " + roomSelected.getLocation());
+        if(isSubmit == 0) {
+            roomData.deleteRoom(id);
+            table.updateUI();
+            Message message = new Message("Quản trị viên đã xoá phòng mà bạn đăng kí vui lòng đăng kí phòng khác", 1);
+            message.setUserName(roomSelected.getUserOrder());
+            messageData.addMessage(message);
+        }
     }
     public void editClass(int rowIndex) {
         Room roomSelected = tableModel.getRenderData().get(rowIndex);
@@ -239,10 +265,72 @@ public class AdminUI extends JFrame {
     }
     public void submitEdit() throws IOException {
         Room roomSelected = tableModel.getRenderData().get(table.getSelectedRow());
-        Room newRoom = new Room(addRoomUI.getClassName(), addRoomUI.getTypeClass(), addRoomUI.getLocate());
-        newRoom.setStatus(addRoomUI.getStatus());
-        Message message = roomData.updateRoom(roomSelected.getId(), newRoom);
-        new DialogWithoutAction(this, message.getMess(), true);
+        if((roomSelected.getStatus() == 3 || roomSelected.getStatus() == 2) && !roomSelected.getUserOrder().isEmpty()) {
+            if(addRoomUI.getStatus() == 1) {
+                Room newRoom = new Room(addRoomUI.getClassName(), addRoomUI.getTypeClass(), addRoomUI.getLocate());
+                newRoom.setStatus(addRoomUI.getStatus());
+                Message message = roomData.updateRoom(roomSelected.getId(), newRoom);
+                JOptionPane.showMessageDialog(this, message.getMess());
+                Message mess = new Message("Quản trị viên đã cập nhập lại thông tin của phòng " + roomSelected.getName() + " toà " + roomSelected.getLocation() + ".Bạn hãy đăng kí phòng học mới", 1);
+                mess.setUserName(roomSelected.getUserOrder());
+                messageData.addMessage(mess);
+            } else if (roomSelected.getStatus() == 3 && addRoomUI.getStatus() == 2) {
+                Room newRoom = new Room(addRoomUI.getClassName(), addRoomUI.getTypeClass(), addRoomUI.getLocate());
+                newRoom.setStatus(addRoomUI.getStatus());
+                newRoom.setLessons(roomSelected.getLessons());
+                newRoom.setDate(roomSelected.getDate());
+                newRoom.setUserOrder(roomSelected.getUserOrder());
+                Message message = roomData.updateRoom(roomSelected.getId(), newRoom);
+                JOptionPane.showMessageDialog(this, message.getMess());
+                Message mess = new Message("Quản trị viên đã cập nhập lại thông tin của phòng " + roomSelected.getName() + " toà " + roomSelected.getLocation() + ".Bạn hãy đăng kí lại", 1);
+                mess.setUserName(roomSelected.getUserOrder());
+                messageData.addMessage(mess);
+            } else {
+                Room newRoom = new Room(addRoomUI.getClassName(), addRoomUI.getTypeClass(), addRoomUI.getLocate());
+                newRoom.setStatus(addRoomUI.getStatus());
+                Message message = roomData.updateRoom(roomSelected.getId(), newRoom);
+                JOptionPane.showMessageDialog(this, message.getMess());
+            }
+        } else if ((roomSelected.getStatus() == 3 || roomSelected.getStatus() == 2) && roomSelected.getUserOrder().isEmpty()) {
+            Room newRoom = new Room(addRoomUI.getClassName(), addRoomUI.getTypeClass(), addRoomUI.getLocate());
+            newRoom.setStatus(addRoomUI.getStatus());
+            Message message = roomData.updateRoom(roomSelected.getId(), newRoom);
+            JOptionPane.showMessageDialog(this, message.getMess());
+        } else {
+            if(roomSelected.getUserOrder().isEmpty()) {
+                if(addRoomUI.getStatus() == 2) {
+                    int re = JOptionPane.showConfirmDialog(this, "Xác nhận thay đổi trạng thái của phòng chưa có người đăng kí sang 'Chờ xác nhận'");
+                    if(re == 0) {
+                        Room newRoom = new Room(addRoomUI.getClassName(), addRoomUI.getTypeClass(), addRoomUI.getLocate());
+                        newRoom.setStatus(addRoomUI.getStatus());
+                        Message message = roomData.updateRoom(roomSelected.getId(), newRoom);
+                        JOptionPane.showMessageDialog(this, message.getMess());
+                    }
+                }
+                else if(addRoomUI.getStatus() == 3) {
+                    int re = JOptionPane.showConfirmDialog(this, "Xác nhận thay đổi trạng thái của phòng chưa có người đăng kí sang 'Đã được mượn'");
+                    if(re == 0) {
+                        Room newRoom = new Room(addRoomUI.getClassName(), addRoomUI.getTypeClass(), addRoomUI.getLocate());
+                        newRoom.setStatus(addRoomUI.getStatus());
+                        Message message = roomData.updateRoom(roomSelected.getId(), newRoom);
+                        JOptionPane.showMessageDialog(this, message.getMess());
+                    }
+                }
+                else {
+                    Room newRoom = new Room(addRoomUI.getClassName(), addRoomUI.getTypeClass(), addRoomUI.getLocate());
+                    newRoom.setStatus(addRoomUI.getStatus());
+                    Message message = roomData.updateRoom(roomSelected.getId(), newRoom);
+                    JOptionPane.showMessageDialog(this, message.getMess());
+                }
+            }
+            else {
+                Room newRoom = new Room(addRoomUI.getClassName(), addRoomUI.getTypeClass(), addRoomUI.getLocate());
+                newRoom.setStatus(addRoomUI.getStatus());
+                Message message = roomData.updateRoom(roomSelected.getId(), newRoom);
+                JOptionPane.showMessageDialog(this, message.getMess());
+            }
+        }
+
         table.updateUI();
     }
     public void viewDetail() {
@@ -255,6 +343,18 @@ public class AdminUI extends JFrame {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn phòng học");
         }
 
+    }
+    public void cancelClass() throws IOException {
+        Room roomSelected = tableModel.getRenderData().get(table.getSelectedRow());
+        UUID id = roomSelected.getId();
+        Room newRoom = new Room(roomSelected.getName(), roomSelected.getType(), roomSelected.getLocation());
+        newRoom.setStatus(1);
+        roomData.updateRoom(id, newRoom);
+        table.updateUI();
+        JOptionPane.showMessageDialog(this, "Huỷ xác nhận thành công");
+        Message mes = new Message("Quản trị viên đã huỷ xác nhận phòng mà bạn đã đăng kí", 1);
+        mes.setUserName(roomSelected.getUserOrder());
+        messageData.addMessage(mes);
     }
     public void viewSummary() {
         new Summary(this, true, roomData.getAll());

@@ -75,7 +75,10 @@ public class AddRoomUI extends JDialog {
         submitComboBox.addActionListener(ac);
         submitComboBox.setActionCommand(actionCommand);
         jLabel4.setText(title);
-
+        if (!isEdit) {
+            jLabel5.setVisible(false);
+            statusComboBox.setVisible(false);
+        }
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -122,10 +125,7 @@ public class AddRoomUI extends JDialog {
                                 .addComponent(submitComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(90, Short.MAX_VALUE))
         );
-        if (!isEdit) {
-            jLabel5.setVisible(false);
-            statusComboBox.setVisible(false);
-        }
+
         pack();
     }// </editor-fold>
 

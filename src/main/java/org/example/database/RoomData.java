@@ -42,9 +42,6 @@ public class RoomData {
     }
     public List<Room> getByCondition(String name, int type, int status) {
         List<Room> re = new ArrayList<>();
-        System.out.println(status);
-        System.out.println(name);
-        System.out.println(type);
         db.stream().filter(room -> {
         if(!name.isEmpty() || type != 0 || status != 0) {
             if(name.isEmpty() && type != 0 && status != 0) {
@@ -82,6 +79,11 @@ public class RoomData {
                 r.setUserOrder(newRoom.getUserOrder());
                 r.setLessons(newRoom.getLessons());
                 r.setDate(newRoom.getDate());
+            }
+            else {
+                r.setUserOrder("");
+                r.setLessons(new ArrayList<>());
+                r.setDate("");
             }
         });
         roomFileService.writeToFile(db);

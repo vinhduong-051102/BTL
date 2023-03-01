@@ -2,13 +2,16 @@ package org.example.view;
 
 import org.example.CommonVariable;
 import org.example.controller.CommonController;
+import org.example.database.MessageData;
 import org.example.database.UserData;
 import org.example.model.Message;
 import org.example.model.User;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 
 public class LoginAndRegisterUI extends JFrame {
     private final CommonVariable commonVariable;
@@ -20,7 +23,7 @@ public class LoginAndRegisterUI extends JFrame {
     private javax.swing.JButton registerBtn;
     private javax.swing.JLabel userNameLabel;
     private javax.swing.JTextField userNameTextField;
-    public LoginAndRegisterUI(UserData userData, CommonVariable commonVariable, CommonController ac) {
+    public LoginAndRegisterUI(UserData userData, CommonVariable commonVariable, @NotNull CommonController ac) {
         this.ac = ac;
         ac.setLoginAndRegister(this);
         this.commonVariable = commonVariable;
@@ -113,5 +116,8 @@ public class LoginAndRegisterUI extends JFrame {
     public void resetField() {
         userNameTextField.setText("");
         passwordTextField.setText("");
+    }
+    public List<Message> getListMess(String name) {
+        return commonVariable.getListMess(name);
     }
 }

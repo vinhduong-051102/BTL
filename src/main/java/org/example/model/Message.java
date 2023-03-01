@@ -1,12 +1,31 @@
 package org.example.model;
 
-public class Message {
+import java.io.Serializable;
+import java.util.UUID;
+
+public class Message implements Serializable {
     private String mess;
     private int status;
+    private UUID id;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    private String userName;
 
     public Message(String mess, int status) {
         this.mess = mess;
         this.status = status;
+        this.id = UUID.randomUUID();
     }
 
     public Message(String mess) {

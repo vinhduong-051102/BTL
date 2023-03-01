@@ -2,7 +2,9 @@ package org.example.view;
 
 import org.example.CommonVariable;
 import org.example.controller.CommonController;
+import org.example.database.MessageData;
 import org.example.database.RoomData;
+import org.example.model.Message;
 import org.example.model.Room;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,6 +19,7 @@ import java.util.UUID;
 public class UserUI extends javax.swing.JFrame {
     private final String[] tableColNames = {"Tên phòng học", "Toà nhà", "Loại phòng", "Trạng thái"};
     private RoomData roomData;
+    private MessageData messageData;
     private CommonController commonController;
     private final ActionListener ac;
     private TableModel tableModel;
@@ -26,8 +29,9 @@ public class UserUI extends javax.swing.JFrame {
     /**
      * Creates new form UserUI
      */
-    public UserUI(RoomData roomData, CommonController commonController, @NotNull CommonController ac, CommonVariable commonVariable) {
+    public UserUI(RoomData roomData, CommonController commonController, @NotNull CommonController ac, CommonVariable commonVariable, MessageData messageData) throws IOException {
         this.roomData = roomData;
+        this.messageData = messageData;
         this.commonController = commonController;
         this.ac = ac;
         this.orderClassUI = new OrderClass(ac);
@@ -43,7 +47,7 @@ public class UserUI extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
-    private void initComponents() {
+    private void initComponents() throws IOException {
         setTitle("Giao diện người dùng");
         setLocationRelativeTo(null);
         tableModel = new TableModel(roomData);
@@ -212,8 +216,12 @@ public class UserUI extends javax.swing.JFrame {
                 case 3:
                     if (room.getStatus() == 1) {
                         return "Chưa được mượn";
-                    } else if (room.getStatus() == 3) {
+                    } else if (room.getStatus() == 3 && room.getUserOrder().isEmpty()) {
                         return "Đã được mượn";
+                    } else if (room.getStatus() == 3 && !room.getUserOrder().isEmpty()) {
+                        return "Đã được mượn (*)";
+                    } else if (room.getStatus() == 2 && !room.getUserOrder().isEmpty()) {
+                        return "Chờ xác nhận (*)";
                     }
                     return "Chờ xác nhận";
                 default:
@@ -260,6 +268,18 @@ public class UserUI extends javax.swing.JFrame {
         }
         else {
             JOptionPane.showMessageDialog(this, "Không được để trống ngày đăng kí hoặc tiết đăng kí");
+        }
+    }
+    public void openMess(@NotNull List<Message> listMessage) throws IOException {
+        if(listMessage.size() > 0) {
+            for (Message mess :
+                    listMessage) {
+                if(mess.getStatus() == 1) {
+                    JOptionPane.showMessageDialog(this, mess.getMess());
+                    messageData.deleteMessage(mess.getId());
+                }
+
+            }
         }
     }
 }

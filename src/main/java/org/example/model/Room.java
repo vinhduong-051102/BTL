@@ -94,4 +94,15 @@ public class Room implements Serializable {
         }
         return str;
     }
+    public String toStringType() {
+        switch (type) {
+            case 2:
+                return "Phòng lý thuyết";
+            case 1:
+                return "Phòng thực hành";
+            default:
+                return "";
+        }
+
+    }
 }
